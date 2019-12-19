@@ -4,7 +4,7 @@ write by qianqianjun
 生成器模型实现
 """
 import tensorflow as tf
-def conv2d_transpose(inputs,output_channel,name,training,with_bn_relu=True):
+def conv2d_transpose(inputs,out_channel,name,training,with_bn_relu=True):
     """
     反卷积的封装
     :param inputs:
@@ -15,16 +15,16 @@ def conv2d_transpose(inputs,output_channel,name,training,with_bn_relu=True):
     :return: 反卷积之后的矩阵
     """
     with tf.variable_scope(name):
-        conv2d_trains=tf.layers.conv2d_transpose(
-            inputs,output_channel,[5,5],
-            strides=(2,2),
+        conv2d_trans = tf.layers.conv2d_transpose(
+            inputs, out_channel, [5, 5],
+            strides=(2, 2),
             padding='SAME'
         )
         if with_bn_relu:
-            bn=tf.layers.batch_normalization(conv2d_trains,training=training)
+            bn = tf.layers.batch_normalization(conv2d_trans, training=training)
             return tf.nn.relu(bn)
         else:
-            return conv2d_trains
+            return conv2d_trans
 
 class Generator(object):
     def __init__(self,channels,init_conv_size):
@@ -33,9 +33,9 @@ class Generator(object):
         :param channels: 生成器反卷积过程中使用的通道数 数组
         :param init_conv_size:  使用的卷积核大小
         """
-        self._channels=channels
-        self._init_conv_size=init_conv_size
-        self._reuse=False
+        self._channels = channels
+        self._init_conv_size = init_conv_size
+        self._reuse = False
     def __call__(self, inputs,training):
         """
         一个魔法函数，用来将对象当函数使用
@@ -44,7 +44,7 @@ class Generator(object):
         :return: 返回生成的图像
         """
         inputs=tf.convert_to_tensor(inputs)
-        with tf.variable_scope('generator'):
+        with tf.variable_scope('generator',reuse=self._reuse):
             """
             下面代码实现的转换是： random vector-> fc全连接层-> 
             self.channels[0] * self._init_conv_size **2 ->
@@ -53,7 +53,7 @@ class Generator(object):
             with tf.variable_scope("input_conv"):
                 fc=tf.layers.dense(
                     inputs,
-                    self._channels[0] * self._init_conv_size **2
+                    self._channels[0] * (self._init_conv_size **2 )
                 )
                 conv0=tf.reshape(fc,[-1,self._init_conv_size,
                                      self._init_conv_size,self._channels[0]])
@@ -65,7 +65,7 @@ class Generator(object):
             # 下面就可以进行反卷积操作了。
             deconv_inputs=relu0
             # 构建 decoder 网络层
-            for i in range(1,len(self._channels)-1):
+            for i in range(1,len(self._channels)):
                 with_bn_relu=(i!=len(self._channels)-1)
                 deconv_inputs=conv2d_transpose(
                     deconv_inputs,
@@ -77,7 +77,7 @@ class Generator(object):
             with tf.variable_scope('generate_imgs'):
                 imgs=tf.tanh(img_inputs,name='imgs')
 
-        self._reuse=True
+        self.reuse=True
         self.variables=tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                          scope='generator')
         return imgs
