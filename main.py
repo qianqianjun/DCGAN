@@ -28,7 +28,8 @@ train_op=dcgan.build_train_op(losses,hps.learning_rate,hps.beta1)
 
 # 开始进行训练～ ：
 init_op=tf.global_variables_initializer()
-train_steps=200
+# 定义训练多少步
+train_steps=hps.train_steps
 with tf.Session() as sess:
     sess.run(init_op)
     for step in range(train_steps):

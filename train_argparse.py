@@ -16,5 +16,5 @@ parser.add_argument("--g_channels",type=list,default=[128,64,32,1],help="生成�
 parser.add_argument("--d_channels",type=list,default=[32,64,128,256],help="判别器的通道树木变化列表，用来构建判别器")
 parser.add_argument("--init_conv_size",type=int,default=4,help="随机向量z经过全连接之后进行reshape 生成三维矩阵的初始边长，默认是 4 ")
 parser.add_argument("--beta1",type=float,default=0.5,help="AdamOptimizer 指数衰减率估计，默认是0.5")
-
+parser.add_argument("--train_steps",type=int,default=5000,help="设置训练多少次，默认是 5000 次")
 hps=parser.parse_args()
