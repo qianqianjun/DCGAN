@@ -60,7 +60,7 @@ python main.py --learning_rate=0.02 --train_steps= 2000
 
 真实图像
 
-![在这里插入图片描述](./out/00500-gen.jpg)
+![在这里插入图片描述](./out/00500-gt.jpg)
 
 **训练1000次**
 
@@ -70,7 +70,7 @@ python main.py --learning_rate=0.02 --train_steps= 2000
 
 真实图像
 
-![在这里插入图片描述](./out/01000-gen.jpg)
+![在这里插入图片描述](./out/01000-gt.jpg)
 
 **训练3000次**
 
@@ -80,7 +80,7 @@ python main.py --learning_rate=0.02 --train_steps= 2000
 
 真实图像
 
-![在这里插入图片描述](./out/03000-gen.jpg)
+![在这里插入图片描述](./out/03000-gt.jpg)
 
 **训练5000次**
 
@@ -90,4 +90,4 @@ python main.py --learning_rate=0.02 --train_steps= 2000
 
 真实图像
 
-![在这里插入图片描述](./out/05000-gen.jpg)
+![在这里插入图片描述](./out/05000-gt.jpg)
